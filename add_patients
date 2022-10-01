@@ -1,0 +1,65 @@
+#Regex Check
+name_regex="[^a-zA-Z ]+"
+department_regex="[^a-zA-Z ]+"
+phone_regex="^[0-9]{3}-[0-9]{3}-[0-9]{4}$"
+email_regex="^[a-zA-Z0-9._]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$"
+
+echo "Please add the following patient details...\n"
+
+echo "Enter patient name"
+read p_name
+
+if [[ "$p_name" =~ $name_regex ]]
+then
+echo "Please enter a valid name"
+exit 1
+fi
+
+echo "Enter department where patient is admitted"
+read department
+
+if [[ "$department" =~ $department_regex ]]
+then
+echo "Please enter a valid department"
+exit 1
+fi
+
+echo "Enter contact number for the patient(xxx-xxx-xxxx)"
+read contact
+
+if [[ "$contact" =~ $phone_regex ]]
+then 
+
+echo "Enter email for the patient"
+read email
+
+if [[ "$email" =~ $email_regex ]]
+then 
+
+#ADD RECORDS
+filename=patients.csv
+#Check if file ends with new line and add records appropriately
+if [ ! -s "$filename" ]; then
+  printf "%s%s%s%s%s\n" $RANDOM,"$p_name","$department","$contact","$email" >> patients.csv
+elif [ -z "$(tail -c 1 <"$filename")" ]; then
+  printf "%s%s%s%s%s\n" $RANDOM,"$p_name","$department","$contact","$email" >> patients.csv
+else
+  printf "\n%s%s%s%s%s\n" $RANDOM,"$p_name","$department","$contact","$email" >> patients.csv
+fi
+
+echo -e "\n##### Patient's details added! #####\n"
+
+else
+echo "Please enter a valid email id in xxxx@xxxx.xxx format"
+exit 1
+fi
+
+
+else
+echo "Please enter a valid contact number in xxx-xxx-xxxx format"
+exit 1
+fi
+
+
+
+

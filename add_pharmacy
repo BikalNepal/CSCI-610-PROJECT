@@ -1,0 +1,47 @@
+#Regex Check
+# location_regex="[A-Za-z0-9'\.\-\s\,]"
+location_regex="[^a-zA-Z ]+"
+pharmacist_regex="[^a-zA-Z ]+"
+number_regex="[^0-9 ]+"
+
+echo "Please add the following pharmacy details...\n"
+
+echo "Enter location"
+read location
+
+if [[ "$location" =~ $location_regex ]]
+then
+echo "Please enter a valid location"
+exit 1
+fi
+
+echo "Enter pharmacist"
+read pharmacist
+
+if [[ "$pharmacist" =~ $pharmacist_regex ]]
+then
+echo "Please enter a valid name"
+exit 1
+fi
+
+echo "Enter building id"
+read building_id
+
+if [[ "$building_id" =~ $number_regex ]]
+then
+echo "Please enter a valid number"
+exit 1
+fi
+
+#ADD RECORDS
+filename=pharmacy.csv
+#Check if file ends with new line and add records appropriately
+if [ ! -s "$filename" ]; then
+  printf "%s%s%s%s%s\n" $RANDOM,"$location","$pharmacist","$building_id" >> pharmacy.csv
+elif [ -z "$(tail -c 1 <"$filename")" ]; then
+  printf "%s%s%s%s%s\n" $RANDOM,"$location","$pharmacist","$building_id" >> pharmacy.csv
+else
+  printf "\n%s%s%s%s%s\n" $RANDOM,"$location","$pharmacist","$building_id" >> pharmacy.csv
+fi
+
+echo -e "\n##### Pharmacy's details added! #####\n"
